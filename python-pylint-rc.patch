@@ -1,0 +1,13 @@
+--- pylint-pylint-1.9.5/pylint/config.py.orig	2019-11-14 17:56:16.034739613 +0100
++++ pylint-pylint-1.9.5/pylint/config.py	2019-11-14 17:57:40.504282002 +0100
+@@ -122,7 +122,9 @@
+             if not os.path.isfile(pylintrc):
+                 pylintrc = os.path.join(user_home, '.config', 'pylintrc')
+     if not os.path.isfile(pylintrc):
+-        if os.path.isfile('/etc/pylintrc'):
++        if os.path.isfile("/etc/pylintrc-%s" % sys.version[0]):
++            pylintrc = "/etc/pylintrc-%s" % sys.version[0]
++        elif os.path.isfile("/etc/pylintrc"):
+             pylintrc = '/etc/pylintrc'
+         else:
+             pylintrc = None
