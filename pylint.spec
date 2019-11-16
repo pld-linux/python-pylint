@@ -2,49 +2,54 @@
 # - include examples in package
 
 # Conditional build:
-%bcond_with	python2	# Python 2.x version
-%bcond_without	python3	# Python 3.x version (available as 'py3lint')
-%bcond_without	doc	# Documentation
-%bcond_with	tests	# unit tests
+%bcond_without  python2 # Python 2.x version
+%bcond_without  python3 # Python 3.x version (available as 'py3lint')
 
 Summary:	Python 2 tool that checks if a module satisfy a coding standard
 Summary(pl.UTF-8):	Narzędzie Pythona 2 sprawdzające zgodność modułu ze standardem kodowania
 Name:		pylint
-Version:	2.4.3
-Release:	3
+Version:	1.8.2
+Release:	2
 License:	GPL v2+
 Group:		Development/Languages/Python
-#Source0Download: https://pypi.org/simple/pylint/
+#Source0Download: https://pypi.python.org/pypi/pylint
 Source0:	https://github.com/PyCQA/pylint/archive/%{name}-%{version}.tar.gz
-# Source0-md5:	742ac2d6e2528e0d2f52edadd31c837b
+# Source0-md5:	573874b242a49af0682c29badc5cf1b9
 URL:		http://www.pylint.org/
 %if %{with python2}
-BuildRequires:	python-astroid >= 2.3.0
-BuildRequires:	python-devel >= 1:3.5
+BuildRequires:	python-astroid >= 1.5.3
+BuildRequires:	python-certifi >= 2017.4.17
+BuildRequires:	python-chardet >= 3.0.2
+BuildRequires:	python-devel
+BuildRequires:	python-idna >= 2.5
+BuildRequires:	python-isort
+BuildRequires:	python-lazy-object-proxy
 BuildRequires:	python-mccabe
-BuildRequires:	python-modules >= 1:3.5
+BuildRequires:	python-modules >= 1:2.5
 BuildRequires:	python-setuptools >= 7.0
-%if %{with tests}
-BuildRequires:	python-isort >= 4.2.5
-BuildRequires:	python-mccabe >= 0.6
-%endif
+BuildRequires:	python-wrapt
+BuildConflicts:	python-chardet >= 3.1.0
+BuildConflicts:	python-idna >= 2.7
 %endif
 %if %{with python3}
+BuildRequires:	python3-2to3
 BuildRequires:	python3-astroid >= 1.5.3
-BuildRequires:	python3-devel >= 1:3.5
+BuildRequires:	python3-certifi >= 2017.4.17
+BuildRequires:	python3-chardet >= 3.0.2
+BuildRequires:	python3-devel
+BuildRequires:	python3-idna >= 2.5
+BuildRequires:	python3-isort
+BuildRequires:	python3-lazy-object-proxy
 BuildRequires:	python3-mccabe
-BuildRequires:	python3-modules >= 1:3.5
+BuildRequires:	python3-modules >= 1:3.2
 BuildRequires:	python3-setuptools >= 7.0
-%if %{with tests}
-BuildRequires:	python3-isort >= 4.2.5
-BuildRequires:	python3-mccabe >= 0.6
-%endif
+BuildRequires:	python3-wrapt
+BuildConflicts:	python3-chardet >= 3.1.0
+BuildConflicts:	python3-idna >= 2.7
 %endif
 BuildRequires:	rpm-pythonprov
-BuildRequires:	rpmbuild(macros) >= 1.714
-%if %{with doc}
+BuildRequires:	rpmbuild(macros) >= 1.219
 BuildRequires:	sphinx-pdg
-%endif
 Requires:	python-pylint = %{version}-%{release}
 Suggests:	python-devel-src
 BuildArch:	noarch
@@ -52,6 +57,9 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # /etc/pylintrc is deliberately packaged to both packages with same name
 %define		_duplicate_files_terminate_build	0
+
+# current Python 3.x provides all these
+%define		_noautoreq	python3egg.backports.functools-lru-cache python3egg.configparser python3egg.singledispatch
 
 %description
 Python 2 tool that checks if a module satisfy a coding standard.
@@ -110,17 +118,6 @@ Python z regułami tworzenia kodu źródłowego.
 
 Ten pakiet zawiera tylko moduły Pythona używane przez to narzędzie.
 
-%package doc
-Summary:	Documentation for pylint
-Summary(pl.UTF-8):	Dokumentacja do pylinta
-Group:		Documentation
-
-%description doc
-Documentation for pylint.
-
-%description doc -l pl.UTF-8
-Dokumentacja do pylinta.
-
 %prep
 %setup -q -n pylint-pylint-%{version}
 
@@ -133,10 +130,8 @@ Dokumentacja do pylinta.
 %py3_build
 %endif
 
-%if %{with doc}
 %{__make} -C doc text \
 	PYTHONPATH=$PWD
-%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -155,7 +150,6 @@ cp -p man/pyreverse.1 $RPM_BUILD_ROOT%{_mandir}/man1/py3reverse.1
 
 %if %{with python2}
 %py_install
-
 %py_postclean
 cp -p man/*.1 $RPM_BUILD_ROOT%{_mandir}/man1
 %endif
@@ -168,6 +162,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python2}
 %files
 %defattr(644,root,root,755)
+%doc ChangeLog README.rst examples/* doc/_build/text/*.txt
 %attr(755,root,root) %{_bindir}/epylint
 %attr(755,root,root) %{_bindir}/pylint
 %attr(755,root,root) %{_bindir}/pyreverse
@@ -180,7 +175,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n python-pylint
 %defattr(644,root,root,755)
-%doc CONTRIBUTORS.txt ChangeLog README.rst examples/*
 %{py_sitescriptdir}/pylint
 %{py_sitescriptdir}/pylint-%{version}-py*.egg-info
 %endif
@@ -188,6 +182,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python3}
 %files -n py3lint
 %defattr(644,root,root,755)
+%doc ChangeLog README.rst examples/* doc/_build/text/*.txt
 %attr(755,root,root) %{_bindir}/epy3lint
 %attr(755,root,root) %{_bindir}/py3lint
 %attr(755,root,root) %{_bindir}/py3reverse
@@ -198,13 +193,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n python3-pylint
 %defattr(644,root,root,755)
-%doc CONTRIBUTORS.txt ChangeLog README.rst examples/*
 %{py3_sitescriptdir}/pylint
 %{py3_sitescriptdir}/pylint-%{version}-py*.egg-info
-%endif
-
-%if %{with doc}
-%files doc
-%defattr(644,root,root,755)
-%doc doc/_build/text/*
 %endif
