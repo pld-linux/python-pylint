@@ -9,6 +9,7 @@ Summary(pl.UTF-8):	Narzędzie Pythona 2 sprawdzające zgodność modułu ze stan
 Name:		python-pylint
 Version:	1.9.5
 Release:	1
+Epoch:		1
 License:	GPL v2+
 Group:		Development/Languages/Python
 #Source0Download: https://pypi.org/simple/pylint
@@ -71,7 +72,7 @@ Ten pakiet zawiera tylko moduły Pythona używane przez to narzędzie.
 Summary:	Python 2 tool that checks if a module satisfy a coding standard (modules)
 Summary(pl.UTF-8):	Narzędzie Pythona sprawdzające zgodność modułu ze standardem kodowania (moduły)
 Group:		Libraries/Python
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name} = %{epoch}:%{version}-%{release}
 
 %description -n py2lint
 Python 2 tool that checks if a module satisfy a coding standard.
@@ -100,7 +101,7 @@ Ten pakiet zawiera tylko moduły Pythona używane przez to narzędzie.
 Summary:	Python 3 tool that checks if a module satisfy a coding standard
 Summary(pl.UTF-8):	Narzędzie Pythona 3 sprawdzające zgodność modułu ze standardem kodowania
 Group:		Development/Languages/Python
-Requires:	python3-pylint = %{version}-%{release}
+Requires:	python3-pylint = %{epoch}:%{version}-%{release}
 Obsoletes:	pylint-python3 < 1.0.0-2
 
 %description -n py3lint
