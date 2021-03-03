@@ -33,6 +33,7 @@ BuildRequires:	python-pytest
 BuildRequires:	python-pytest-xdist
 BuildRequires:	python-singledispatch
 %endif
+%endif
 %if %{with python3}
 BuildRequires:	python3-devel >= 1:3.4
 BuildRequires:	python3-modules >= 1:3.4
