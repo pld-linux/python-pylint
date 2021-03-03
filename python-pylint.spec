@@ -24,7 +24,6 @@ BuildRequires:	python-pytest-runner
 BuildRequires:	python-setuptools >= 7.0
 %if %{with tests} || %{with doc}
 BuildRequires:	python-astroid >= 1.6.0
-BuildRequires:	python-astroid < 2.0
 BuildRequires:	python-backports.functools_lru_cache
 BuildRequires:	python-configparser
 BuildRequires:	python-isort >= 4.2.5
@@ -37,12 +36,10 @@ BuildRequires:	python-singledispatch
 %if %{with python3}
 BuildRequires:	python3-devel >= 1:3.4
 BuildRequires:	python3-modules >= 1:3.4
-BuildRequires:	python3-modules < 1:3.7
 BuildRequires:	python3-pytest-runner
 BuildRequires:	python3-setuptools >= 7.0
 %if %{with tests} || %{with doc}
 BuildRequires:	python3-astroid >= 1.6.0
-BuildRequires:	python3-astroid < 2.0
 BuildRequires:	python3-isort >= 4.2.5
 BuildRequires:	python3-pytest
 BuildRequires:	python3-pytest-xdist
