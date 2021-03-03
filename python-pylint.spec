@@ -156,6 +156,9 @@ for tool in epylint pylint pyreverse symilar ; do
 done
 
 cp -p examples/pylintrc $RPM_BUILD_ROOT%{_sysconfdir}/pylintrc-2
+
+# don't package unit test data
+%{__rm} -r $RPM_BUILD_ROOT%{py_sitescriptdir}/pylint/test
 %endif
 
 %if %{with python3}
@@ -174,6 +177,9 @@ echo '.so pylint-3.1' >$RPM_BUILD_ROOT%{_mandir}/man1/py3lint.1
 echo '.so pyreverse-3.1' >$RPM_BUILD_ROOT%{_mandir}/man1/py3reverse.1
 
 cp -p examples/pylintrc $RPM_BUILD_ROOT%{_sysconfdir}/pylintrc-3
+
+# don't package unit test data
+%{__rm} -r $RPM_BUILD_ROOT%{py3_sitescriptdir}/pylint/test
 %endif
 
 %clean
