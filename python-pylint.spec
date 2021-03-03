@@ -8,7 +8,7 @@ Summary:	Python 2 tool that checks if a module satisfy a coding standard
 Summary(pl.UTF-8):	Narzędzie Pythona 2 sprawdzające zgodność modułu ze standardem kodowania
 Name:		python-pylint
 Version:	1.9.5
-Release:	1
+Release:	2
 Epoch:		1
 License:	GPL v2+
 Group:		Development/Languages/Python
