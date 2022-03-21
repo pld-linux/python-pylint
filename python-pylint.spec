@@ -1,12 +1,13 @@
 #
 # Conditional build:
 %bcond_without	python2	# Python 2.x version (available as 'py2lint')
-%bcond_with	python3	# Python 3.x version (available as 'py3lint')
+%bcond_with	python3	# Python 3.x version (available as 'py3lint'; built from pylint.spec)
 %bcond_without	doc	# Sphinx documentation
 
 Summary:	Python 2 tool that checks if a module satisfy a coding standard
 Summary(pl.UTF-8):	Narzędzie Pythona 2 sprawdzające zgodność modułu ze standardem kodowania
 Name:		python-pylint
+# keep 1.x here for python2 support
 Version:	1.9.5
 Release:	2
 Epoch:		1
@@ -16,13 +17,13 @@ Group:		Development/Languages/Python
 Source0:	https://github.com/PyCQA/pylint/archive/pylint-%{version}.tar.gz
 # Source0-md5:	3db0fde1876d50ad313fd707ecd6562b
 Patch0:		%{name}-rc.patch
-URL:		http://www.pylint.org/
+URL:		https://www.pylint.org/
 %if %{with python2}
 BuildRequires:	python-devel >= 1:2.7
 BuildRequires:	python-modules >= 1:2.7
 BuildRequires:	python-pytest-runner
 BuildRequires:	python-setuptools >= 1:7.0
-%if %{with tests} || %{with doc}
+%if %{with tests}
 BuildRequires:	python-astroid >= 1.6.0
 BuildRequires:	python-backports.functools_lru_cache
 BuildRequires:	python-configparser
@@ -31,6 +32,7 @@ BuildRequires:	python-mccabe
 BuildRequires:	python-pytest
 BuildRequires:	python-pytest-xdist
 BuildRequires:	python-singledispatch
+BuildRequires:	python-six
 %endif
 %endif
 %if %{with python3}
@@ -38,18 +40,26 @@ BuildRequires:	python3-devel >= 1:3.4
 BuildRequires:	python3-modules >= 1:3.4
 BuildRequires:	python3-pytest-runner
 BuildRequires:	python3-setuptools >= 1:7.0
-%if %{with tests} || %{with doc}
+%if %{with tests}
 BuildRequires:	python3-astroid >= 1.6.0
 BuildRequires:	python3-isort >= 4.2.5
 BuildRequires:	python3-pytest
 BuildRequires:	python3-pytest-xdist
 BuildRequires:	python3-mccabe
+BuildRequires:	python3-six
 %endif
 %endif
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.714
 %if %{with doc}
-BuildRequires:	sphinx-pdg >= 1
+BuildRequires:	python-astroid >= 1.6.0
+BuildRequires:	python-backports.functools_lru_cache
+BuildRequires:	python-configparser
+BuildRequires:	python-isort >= 4.2.5
+BuildRequires:	python-mccabe
+BuildRequires:	python-singledispatch
+BuildRequires:	python-six
+BuildRequires:	sphinx-pdg-2 >= 1
 %endif
 Suggests:	python-devel-src
 BuildArch:	noarch
@@ -139,7 +149,8 @@ Dokumentacja do modułu i narzędzia pylint.
 
 %if %{with doc}
 %{__make} -C doc text \
-	PYTHONPATH=$PWD
+	PYTHONPATH=$PWD \
+	SPHINXBUILD=sphinx-build-2
 %endif
 
 %install
