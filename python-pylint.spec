@@ -43,9 +43,9 @@ BuildRequires:	python3-setuptools >= 1:7.0
 %if %{with tests}
 BuildRequires:	python3-astroid >= 1.6.0
 BuildRequires:	python3-isort >= 4.2.5
+BuildRequires:	python3-mccabe
 BuildRequires:	python3-pytest
 BuildRequires:	python3-pytest-xdist
-BuildRequires:	python3-mccabe
 BuildRequires:	python3-six
 %endif
 %endif
@@ -136,7 +136,7 @@ Dokumentacja do modułu i narzędzia pylint.
 
 %prep
 %setup -q -n pylint-pylint-%{version}
-%patch0 -p1
+%patch -P 0 -p1
 
 %build
 %if %{with python2}
