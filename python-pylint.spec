@@ -9,7 +9,7 @@ Summary(pl.UTF-8):	Narzędzie Pythona 2 sprawdzające zgodność modułu ze stan
 Name:		python-pylint
 # keep 1.x here for python2 support
 Version:	1.9.5
-Release:	2
+Release:	3
 Epoch:		1
 License:	GPL v2+
 Group:		Development/Languages/Python
